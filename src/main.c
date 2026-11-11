@@ -7,10 +7,9 @@ int main(int ac, char **av)
 	memset(&opts, 0, sizeof(opts));
 	if(parse_args(ac, av, &opts))
 		return 64;
-	if(opts.help)
-	{
-		print_usage();
-		return 0;
-	}
+	if (opts.help)
+		return (print_usage(), 0);
+	if (opts.usage)
+		return (print_short_usage(), 0);
 	printf("HELlo");
 }

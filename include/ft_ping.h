@@ -20,13 +20,16 @@ typedef struct ft_ping
 {
 	int verbose;
 	int help;
-	int *host;
+	int usage;
+	char *host;
 
 } t_opts;
 
 
 // PARSING.C
-int parse_args(int ac, char **av);
+int 	parse_args(int ac, char **av, t_opts *opts);
+void	print_usage(void);
+void	print_short_usage(void);
 
 // UTILS.C
 
