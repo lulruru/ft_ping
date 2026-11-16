@@ -12,6 +12,8 @@ int main(int ac, char **av)
 	if (ping.opts.usage)
 		return (print_short_usage(), 0);
 	find_host(&ping);
+	ping.id = getpid() & 0xFFFF;
+	
 	printf("%s",ping.opts.host);
 	
 }

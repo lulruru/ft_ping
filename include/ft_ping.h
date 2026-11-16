@@ -1,27 +1,27 @@
 #ifndef FT_PING_H
 # define FT_PING_H
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
-# include <errno.h>
-# include <signal.h>
-# include <sys/select.h>
-# include <sys/socket.h>
-# include <sys/time.h>
-# include <netinet/in.h>
-# include <netinet/ip.h> 
-# include <netinet/ip_icmp.h>
-# include <arpa/inet.h>
-# include <netdb.h> 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <signal.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <netinet/in.h>
+#include <netinet/ip.h> 
+#include <netinet/ip_icmp.h>
+#include <arpa/inet.h>
+#include <netdb.h> 
 
 #define PING_PKT_S 64
 #define PORT_NO 0
 #define PING_SLEEP_RATE 1000000
 #define RECV_TIMEOUT 5
 #define DUP_TABLE_SIZE 8192
-
+#define ICMP_HDR_LEN 8
 typedef struct s_opts
 {
 	int verbose;
@@ -64,7 +64,9 @@ int				find_host(t_ping *ping);
 unsigned short	checksum(unsigned short *addr , int count);
 
 // SOCKET.C
-int init_socket(t_ping *ping);
+int 			init_socket(t_ping *ping);
 
+// PACKET.C
+void 			init_packet(t_ping *ping);
 
 #endif
