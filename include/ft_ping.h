@@ -16,6 +16,12 @@
 # include <arpa/inet.h>
 # include <netdb.h> 
 
+#define PING_PKT_S 64
+#define PORT_NO 0
+#define PING_SLEEP_RATE 1000000
+#define RECV_TIMEOUT 1
+#define DUP_TABLE_SIZE 8192
+
 typedef struct ft_ping
 {
 	int verbose;
@@ -25,17 +31,36 @@ typedef struct ft_ping
 
 } t_opts;
 
-typedef struct s_ping{
+typedef struct s_stats
+{
+	long	transmitted;
+	long	received;
+	long	duplicates;
+	double	rtt_min;
+	double	rtt_max;
+	double	rtt_sum;
+	double	rtt_sumsq;
+}	t_stats;
 
-} t_ping;
+typedef struct s_ping
+{
+	t_opts				opts;
+	t_stats				stats;
+	char				canonname[NI_MAXHOST];
+	char				ip_str[INET_ADDRSTRLEN];
+	struct sockaddr_in	sockaddr;
+	int					sockfd;
+	unsigned short		id;
+	unsigned char		dup_table[DUP_TABLE_SIZE];
+}	t_ping;
 
 // PARSING.C
-int 	parse_args(int ac, char **av, t_opts *opts);
-void	print_usage(void);
-void	print_short_usage(void);
-int		find_host(t_opts *opts);
+int 			parse_args(int ac, char **av, t_opts *opts);
+void			print_usage(void);
+void			print_short_usage(void);
+int				find_host(t_opts *opts);
 
-// UTILS.C
-
+// CHECKSUM.C
+unsigned short	checksum(unsigned short *addr , int count);
 
 #endif
