@@ -19,7 +19,7 @@
 #define PING_PKT_S 64
 #define PORT_NO 0
 #define PING_SLEEP_RATE 1000000
-#define RECV_TIMEOUT 1
+#define RECV_TIMEOUT 5
 #define DUP_TABLE_SIZE 8192
 
 typedef struct s_opts
@@ -62,5 +62,9 @@ int				find_host(t_ping *ping);
 
 // CHECKSUM.C
 unsigned short	checksum(unsigned short *addr , int count);
+
+// SOCKET.C
+int init_socket(t_ping *ping);
+
 
 #endif
