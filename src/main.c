@@ -2,15 +2,16 @@
 
 int main(int ac, char **av)
 {
-	t_opts	opts;
+	t_ping	ping;
 
-	memset(&opts, 0, sizeof(opts));
-	if(parse_args(ac, av, &opts))
+	memset(&ping, 0, sizeof(ping));
+	if(parse_args(ac, av, &ping.opts))
 		return 64;
-	if (opts.help)
+	if (ping.opts.help)
 		return (print_usage(), 0);
-	if (opts.usage)
+	if (ping.opts.usage)
 		return (print_short_usage(), 0);
-	find_host(&opts);
-	printf("%s",opts.host);
+	find_host(&ping);
+	printf("%s",ping.opts.host);
+	
 }

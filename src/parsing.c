@@ -72,7 +72,7 @@ int parse_args(int ac, char **av, t_opts *opts)
 
 	if(ac == 1)
 	{
-		fprintf(stderr, "ft_ping: missing host operand\n");
+		fprintf(stderr, "ft_ping: missing host operand\nTry 'ping --help' or 'ping --usage' for more information.\n");
 		return (1);
 	}
 	while(i < ac)
@@ -92,42 +92,27 @@ int parse_args(int ac, char **av, t_opts *opts)
 
 // ping: missing host operand
 // Try 'ping --help' or 'ping --usage' for more information.
-
-int find_host(t_opts *opts){
-	struct addrinfo hints;
-	struct addrinfo *result;
-	int status;
+int	find_host(t_ping *ping)
+{
+	struct addrinfo	hints;
+	struct addrinfo	*res;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_RAW;
 	hints.ai_protocol = IPPROTO_ICMP;
 	hints.ai_flags = AI_CANONNAME;
-	status = getaddrinfo(opts->host, NULL, &hints, &result);
-
-	if(status)
+	if (getaddrinfo(ping->opts.host, NULL, &hints, &res))
 	{
-		printf("getaddrinfo failed.\n");
-		return EXIT_FAILURE;
+		fprintf(stderr, "ft_ping: unknown host\n");
+		return (1);
 	}
-	struct addrinfo *tmp;
-	tmp = result;
-	while(tmp != NULL){
-		printf("Adresse : \n");
-		printf("\t Type : %i \n", tmp->ai_socktype);
-		printf("\t protocol : %i \n", tmp->ai_protocol);
-		printf("\t family : %i \n", tmp->ai_family);
-		void *addr;
-		char address_string[INET6_ADDRSTRLEN];
-		if(tmp->ai_family == AF_INET){
-			addr = &((struct sockaddr_in *)tmp->ai_addr)->sin_addr;
-		}
-		else
-			printf("ipv6 not handled");
-		inet_ntop(tmp->ai_family, addr, address_string, INET_ADDRSTRLEN);
-		printf("\t ADRESS  : %s\n", address_string);
-		tmp = tmp->ai_next;
-	}
-	freeaddrinfo(result);
-	return EXIT_SUCCESS;
+	memcpy(&ping->sockaddr, res->ai_addr, sizeof(ping->sockaddr));
+	inet_ntop(AF_INET, &ping->sockaddr.sin_addr,
+		ping->ip_str, sizeof(ping->ip_str));
+	if (res->ai_canonname)
+		strncpy(ping->canonname, res->ai_canonname, NI_MAXHOST - 1);
+	freeaddrinfo(res);
+	return (0);
 }
+

@@ -22,7 +22,7 @@
 #define RECV_TIMEOUT 1
 #define DUP_TABLE_SIZE 8192
 
-typedef struct ft_ping
+typedef struct s_opts
 {
 	int verbose;
 	int help;
@@ -58,7 +58,7 @@ typedef struct s_ping
 int 			parse_args(int ac, char **av, t_opts *opts);
 void			print_usage(void);
 void			print_short_usage(void);
-int				find_host(t_opts *opts);
+int				find_host(t_ping *ping);
 
 // CHECKSUM.C
 unsigned short	checksum(unsigned short *addr , int count);
