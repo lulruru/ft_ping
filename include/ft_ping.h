@@ -25,11 +25,15 @@ typedef struct ft_ping
 
 } t_opts;
 
+typedef struct s_ping{
+
+} t_ping;
 
 // PARSING.C
 int 	parse_args(int ac, char **av, t_opts *opts);
 void	print_usage(void);
 void	print_short_usage(void);
+int		find_host(t_opts *opts);
 
 // UTILS.C
 

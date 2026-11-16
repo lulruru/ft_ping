@@ -86,10 +86,48 @@ int parse_args(int ac, char **av, t_opts *opts)
 			opts->host = av[i];
 		i++;
 	}
-
 	return 0;
 }
 
 
 // ping: missing host operand
 // Try 'ping --help' or 'ping --usage' for more information.
+
+int find_host(t_opts *opts){
+	struct addrinfo hints;
+	struct addrinfo *result;
+	int status;
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_RAW;
+	hints.ai_protocol = IPPROTO_ICMP;
+	hints.ai_flags = AI_CANONNAME;
+	status = getaddrinfo(opts->host, NULL, &hints, &result);
+
+	if(status)
+	{
+		printf("getaddrinfo failed.\n");
+		return EXIT_FAILURE;
+	}
+	struct addrinfo *tmp;
+	tmp = result;
+	while(tmp != NULL){
+		printf("Adresse : \n");
+		printf("\t Type : %i \n", tmp->ai_socktype);
+		printf("\t protocol : %i \n", tmp->ai_protocol);
+		printf("\t family : %i \n", tmp->ai_family);
+		void *addr;
+		char address_string[INET6_ADDRSTRLEN];
+		if(tmp->ai_family == AF_INET){
+			addr = &((struct sockaddr_in *)tmp->ai_addr)->sin_addr;
+		}
+		else
+			printf("ipv6 not handled");
+		inet_ntop(tmp->ai_family, addr, address_string, INET_ADDRSTRLEN);
+		printf("\t ADRESS  : %s\n", address_string);
+		tmp = tmp->ai_next;
+	}
+	freeaddrinfo(result);
+	return EXIT_SUCCESS;
+}

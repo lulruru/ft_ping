@@ -11,5 +11,6 @@ int main(int ac, char **av)
 		return (print_usage(), 0);
 	if (opts.usage)
 		return (print_short_usage(), 0);
-	printf("HELlo");
+	find_host(&opts);
+	printf("%s",opts.host);
 }
