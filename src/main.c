@@ -13,7 +13,16 @@ int main(int ac, char **av)
 		return (print_short_usage(), 0);
 	find_host(&ping);
 	ping.id = getpid() & 0xFFFF;
-	
+	if (find_host(&ping) || init_socket(&ping))
+		return (1);
+	ping.id = getpid() & 0xFFFF;
+	setup_signals();
+	printf("PING %s (%s): %d data bytes\n", ping.opts.host,
+		ping.ip_str, PING_PKT_S - ICMP_HDR_LEN);
+	ping_loop(&ping);
+	print_summary(&ping);
+	close(ping.sockfd);
+	return (ping.stats.received == 0);
 	printf("%s",ping.opts.host);
 	
 }

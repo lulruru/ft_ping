@@ -4,14 +4,14 @@ CFLAGS  = -Wall -Wextra -Werror -Iinclude
 
 SRC_DIR = src
 OBJ_DIR = obj
-SRCS    = main.c parsing.c
+SRCS    = checksum.c main.c packet.c parsing.c ping.c socket.c stats.c
 OBJS    = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 DEPS    = $(OBJS:.o=.d)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lm
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
