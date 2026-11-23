@@ -65,28 +65,32 @@ int	parse_arg(char *arg, t_opts *opts)
 	return (parse_option(arg, opts));
 }
 
-int parse_args(int ac, char **av, t_opts *opts)
+int	parse_args(int ac, char **av, t_opts *opts)
 {
-	int i;
-	i = 1;
+	int	i;
+	int	end;
 
-	if(ac == 1)
+	i = 1;
+	end = 0;
+	while (i < ac)
 	{
-		fprintf(stderr, "ft_ping: missing host operand\nTry 'ping --help' or 'ping --usage' for more information.\n");
-		return (1);
-	}
-	while(i < ac)
-	{
-		if(av[i][0] == '-' && av[i][1])
+		if (!end && !strcmp(av[i], "--"))
+			end = 1;
+		else if (!end && av[i][0] == '-' && av[i][1])
 		{
-			if(parse_arg(av[i], opts))
-				return 1;
+			if (parse_arg(av[i], opts))
+				return (1);
 		}
-		else if(!opts->host)
+		else if (!opts->host)
 			opts->host = av[i];
 		i++;
 	}
-	return 0;
+	if (!opts->host && !opts->help && !opts->usage)
+	{
+		fprintf(stderr, "ft_ping: missing host operand\n");
+		return (1);
+	}
+	return (0);
 }
 
 
@@ -97,6 +101,8 @@ int	find_host(t_ping *ping)
 	struct addrinfo	hints;
 	struct addrinfo	*res;
 
+	if (!ping->opts.host)
+		return (1);
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_RAW;

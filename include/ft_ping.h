@@ -20,7 +20,7 @@
 #define PING_PKT_S 64
 #define PORT_NO 0
 #define PING_SLEEP_RATE 1000000
-#define RECV_TIMEOUT 5
+#define RECV_TIMEOUT 1
 #define DUP_TABLE_SIZE 8192
 #define ICMP_HDR_LEN 8
 

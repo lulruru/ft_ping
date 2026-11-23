@@ -94,8 +94,7 @@ int	recv_packet(t_ping *ping)
 	if (len < hlen + ICMP_HDR_LEN + (ssize_t)sizeof(struct timeval))
 		return (RECV_SKIP);
 	icmp = (struct icmp *)(buf + hlen);
-	if (icmp->icmp_type != ICMP_ECHOREPLY
-		|| ntohs(icmp->icmp_id) != ping->id)
+	if (icmp->icmp_type != ICMP_ECHOREPLY || ntohs(icmp->icmp_id) != ping->id)
 		return (RECV_SKIP);
 	handle_reply(ping, ip, icmp, len - hlen);
 	return (RECV_GOT);
