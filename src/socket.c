@@ -18,6 +18,10 @@ int init_socket(t_ping *ping){
 		close(fd);
 		return EXIT_FAILURE;
 	}
+	// int	ttl;
+
+	// ttl = 1;
+	// setsockopt(fd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
 	ping->sockfd = fd;
 	return EXIT_SUCCESS;
 }
